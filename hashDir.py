@@ -57,7 +57,9 @@ def checkFileHash(newhash, filename):
 
             
 def getNewFiles(folderPath, hashstore): #finds what files have changes and returns them in a list
-    return checkFileHash(getDirHash(folderPath), hashstore)
+    newFileList = checkFileHash(getDirHash(folderPath), hashstore)
+    print(newFileList)
+    return newFileList
 
 
 if __name__ == "__main__": #arguments are used if this is run stand alone
