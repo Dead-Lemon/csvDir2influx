@@ -186,6 +186,8 @@ if __name__ == "__main__":
 
     parser.add_argument('-b', '--batchsize', type=int, default=5000,
                         help='Batch size. Default: 5000.')
+    parser.add_argument('--singletag', nargs='?', required=False,
+                        help='use tagcolumns input as the only tagname. used where the csv is uploaded by a single IOT device')
 
     args = parser.parse_args()
     loadCsv(args.input, args.server, args.user, args.password, args.dbname, 
