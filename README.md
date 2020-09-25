@@ -7,6 +7,19 @@ Library is being modified to watch a folder for FTP uploaded CSV files.
 hashDir will return a list of change files between runs
 folder-watch will monitor a set folder and trigger when a file detects a Close with write.
 
+## hashDir Usage
+
+```
+usage: hashDir.py -i [INPUT] -s [STORE]
+
+  -i [INPUT], --input [INPUT]
+                        Path to folder to check
+  -s [STORE], --store [STORE]
+                        Store name for dirtory hashes
+                        Default = .oldhash
+
+```
+
 
 ## Usage
 
