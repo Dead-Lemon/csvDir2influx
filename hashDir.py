@@ -1,6 +1,7 @@
 import argparse
 import hashlib
 import os
+import json
 
 hasher = hashlib.sha1()
 
@@ -24,19 +25,27 @@ def getDirHash(folderPath): #generates hashes for all files in a directory
 
 def storeHashList(hashlist, filename):
     with open(filename,'w+') as storehash: #creates/overrides file and stores hash list to disk
-        for data in hashlist:
-            storehash.write('%s\n' % data)
-            print(data)
+        json.dump(hashlist, storehash) #stores hashlist as a json file
 
 def checkFileHash(newhash, filename):
+    oldlist = []
+    filefound = []
     if os.path.isfile(filename) == False: #checks if file exists
         with open(filename, 'w+') as f: #creates the file
             temp = ['','']
-            f.write('%s\n' % temp) #initilize table
-    with open(filename) as f:
-        for line in f:
-            line = line.strip()
-            print(line)
+            json.dump(temp, f) #save blank template as json file
+
+#    storeHashList(newhash, filename)
+    with open(filename) as f: #opens saved hash file as f
+        oldlist = json.load(f) #load json data from file
+    
+    for i in oldlist:
+        for j in newlist:
+            if (i[0] != j[0]):
+                filefound.append(j)
+    print(filefound)
+
+            
 
 
 
@@ -62,4 +71,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    getNewFiles(args.input, get.store)
+    getNewFiles(args.input, args.store)
