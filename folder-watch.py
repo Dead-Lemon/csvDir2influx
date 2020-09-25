@@ -3,7 +3,6 @@ import argparse
 #import csv-to-influxdb
 
 
-
 def folderwatch(folderpath):
 
     i = inotify.adapters.Inotify()
