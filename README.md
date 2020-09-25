@@ -18,6 +18,8 @@ usage: hashDir.py -i [INPUT] -s [STORE]
                         Store name for dirtory hashes
                         Default = .oldhash
 
+returns [HASH, FULL PATH OF FILE, FILE NAME]
+
 ```
 
 
