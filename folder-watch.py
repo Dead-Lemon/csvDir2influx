@@ -1,14 +1,27 @@
 import inotify.adapters
-#
-#i = inotify.adapters.InotifyTree('/home/pointftp/SIM1')
-#
-#for event in i.event_gen():
-#    print(event)
+import argparse
+import csv-to-influxdb
 
 
-i = inotify.adapters.inotify()
 
-i.add_watch('/home/pointftp/SIM1')
-    for event in i.event_gen(yield_nones=False):
-        (_, type_names, path, filename) = event
-        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names))
+def folderwatch(folderpath):
+    i = inotify.adapters.InotifyTree(folderpath)
+
+    for event in i.event_gen():
+        print(event)
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='folder activity trigger')
+
+    parser.add_argument('-i', '--input', nargs='?', required=True,
+                        help='Input folder to watch')
+
+    args = parser.parse_args()
+
+    folderwatch(args.input)
