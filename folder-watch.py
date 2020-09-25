@@ -8,13 +8,16 @@ def folderwatch(folderpath):
 
     i = inotify.adapters.Inotify()
 
-    i.add_watch(folderpath)
+    i.add_watch(folderpath) #set folder to watch for changes
 
     for event in  i.event_gen(yield_nones=False):
-        (_, type_names, path, filename) = event
-        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names))
-        if 'IN_CLOSE_WRITE' in type_names:
+        (_, type_names, path, filename) = event #extracts the topics of interest, as taken from the example
+        
+        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names)) #displays the info from the differnt topics
+        
+        if 'IN_CLOSE_WRITE' in type_names: #looks for a file that has been written to, indicated IOT device has uploaded new logs
             print('found file to have updated')
+        sleep(1)
 
 
 
