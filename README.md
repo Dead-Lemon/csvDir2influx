@@ -1,7 +1,12 @@
-# csv-to-influxdb
+# csv-to-influxdb Extended
 Simple python script that inserts data points read from a csv file into a influxdb database.
 
 To create a new database, specify the parameter ```--create```. This will drop any database with a name equal to the one supplied with ```--dbname```.
+
+Library is being modified to watch a folder for FTP uploaded CSV files.
+hashDir will return a list of change files between runs
+folder-watch will monitor a set folder and trigger when a file detects a Close with write.
+
 
 ## Usage
 
