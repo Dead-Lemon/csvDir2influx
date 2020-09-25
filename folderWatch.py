@@ -5,7 +5,7 @@ import hashDir
 import time
 
 
-def folderwatch(folderpath):
+def folderwatch(folderpath, ignorefile):
 
     i = inotify.adapters.Inotify()
 
@@ -34,9 +34,12 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--input', nargs='?', required=True,
                         help='Input folder to watch')
 
+    parser.add_argument('-g', '--ignore', nargs='?', default='_A_',
+                        help='ignore file containing the phrase')
+
     args = parser.parse_args()
 
-    folderwatch(args.input)
+    folderwatch(args.input, args.ignore)
 
 
 

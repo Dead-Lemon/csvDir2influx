@@ -3,19 +3,16 @@ import hashlib
 import os
 import json
 
-hasher = hashlib.sha1()
 
-def hashfile(filepath): #generates sha1 hash of inputted file
+def hashfile(filepath): #generates MD5 hash of inputted file
     return hashlib.md5(open(filepath, 'rb').read()).hexdigest() 
 
 def getDirHash(folderPath): #generates hashes for all files in a directory
-    hashlist = []
-    
+    hashlist = []    
     for dirName, subdirList, fileList in os.walk(folderPath): #retrieves lists for files in folder
         for files in fileList:
             filepath = "/".join([folderPath,files]) #creates the full path of the file
-            #print(filepath) #recreating the full path so we can open the file
-            hashedfile = hashfile(filepath) #get has of the selected file
+            hashedfile = hashfile(filepath) #get hash of the selected file
             hashlist.append([hashedfile, filepath, files]) #add hash and file path to a list
     return hashlist
 
