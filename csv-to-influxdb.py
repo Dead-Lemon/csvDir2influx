@@ -47,7 +47,7 @@ def isinteger(value):
 
 def loadCsv(inputfilename, servername, user, password, dbname, metric, 
     timecolumn, timeformat, tagcolumns, fieldcolumns, usegzip, 
-    delimiter, batchsize, create, datatimezone, usessl):
+    delimiter, batchsize, create, datatimezone, usessl, singletag, fieldname):
 
     host = servername[0:servername.rfind(':')]
     port = int(servername[servername.rfind(':')+1:])
@@ -66,6 +66,8 @@ def loadCsv(inputfilename, servername, user, password, dbname, metric,
         tagcolumns = tagcolumns.split(',')
     if fieldcolumns:
         fieldcolumns = fieldcolumns.split(',')
+    if fieldnames:
+        fieldnames = fieldnames.split(',')
 
     # open csv
     datapoints = []
@@ -84,11 +86,14 @@ def loadCsv(inputfilename, servername, user, password, dbname, metric,
             timestamp = unix_time_millis(datetime_local) * 1000000 # in nanoseconds
 
             tags = {}
-            for t in tagcolumns:
-                v = 0
-                if t in row:
-                    v = row[t]
-                tags[t] = v
+            if singletag:
+                tags = tagcolumns
+            else:
+                for t in tagcolumns:
+                    v = 0
+                    if t in row:
+                        v = row[t]
+                    tags[t] = v
 
             fields = {}
             for f in fieldcolumns:
@@ -186,11 +191,15 @@ if __name__ == "__main__":
 
     parser.add_argument('-b', '--batchsize', type=int, default=5000,
                         help='Batch size. Default: 5000.')
-    parser.add_argument('--singletag', nargs='?', required=False,
-                        help='use tagcolumns input as the only tagname. used where the csv is uploaded by a single IOT device')
+
+    parser.add_argument('--singletag', nargs='?', default=False,
+                        help='use tagcolumns input as the only tag name. used where the csv is uploaded by a single IOT device')
+
+    parser.add_argument('--fieldname', nargs='?', default='value',
+                        help='replace fieldname titles with this list')
 
     args = parser.parse_args()
     loadCsv(args.input, args.server, args.user, args.password, args.dbname, 
         args.metricname, args.timecolumn, args.timeformat, args.tagcolumns, 
         args.fieldcolumns, args.gzip, args.delimiter, args.batchsize, args.create, 
-        args.timezone, args.ssl)
+        args.timezone, args.ssl, args.singletag, args.fieldname)
