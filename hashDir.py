@@ -16,7 +16,7 @@ def getDirHash(folderPath): #generates hashes for all files in a directory
             filepath = "/".join([folderPath,files]) #creates the full path of the file
             #print(filepath) #recreating the full path so we can open the file
             hashedfile = hashfile(filepath) #get has of the selected file
-            hashlist.append([hashedfile, filepath]) #add hash and file path to a list
+            hashlist.append([hashedfile, filepath, files]) #add hash and file path to a list
     return hashlist
 
 def storeHashList(hashlist, filename):
