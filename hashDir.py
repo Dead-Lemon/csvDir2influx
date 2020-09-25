@@ -14,7 +14,7 @@ def getDirHash(folderPath): #generates hashes for all files in a directory
     for dirName, subdirList, fileList in os.walk(folderPath): #retrieves lists for files in folder
         for files in fileList:
             filepath = "/".join([folderPath,files]) #creates the full path of the file
-            print(filepath) #recreating the full path so we can open the file
+            #print(filepath) #recreating the full path so we can open the file
             hashedfile = hashfile(filepath) #get has of the selected file
             hashlist.append([hashedfile, filepath]) #add hash and file path to a list
     return hashlist
