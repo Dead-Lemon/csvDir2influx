@@ -58,7 +58,7 @@ def checkFileHash(newhash, filename):
             
 def getNewFiles(folderPath, hashstore): #finds what files have changes and returns them in a list
     newFileList = checkFileHash(getDirHash(folderPath), hashstore)
-    print(newFileList)
+    #print(newFileList)
     return newFileList
 
 

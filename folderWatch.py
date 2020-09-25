@@ -1,6 +1,7 @@
 import inotify.adapters
 import argparse
-#import csv-to-influxdb
+import csvToInfluxdb
+import hashDir
 
 
 def folderwatch(folderpath):
@@ -15,8 +16,14 @@ def folderwatch(folderpath):
         print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names)) #displays the info from the differnt topics
         
         if 'IN_CLOSE_WRITE' in type_names: #looks for a file that has been written to, indicated IOT device has uploaded new logs
-            print('found file to have updated')
-        sleep(1)
+            sleep(20)
+            newFiles = hashDir.getNewFiles(folderpath, '.oldhash')
+            if newFiles == []:
+                print("nothing to do")
+            else:
+                print(newFiles)
+
+        
 
 
 
