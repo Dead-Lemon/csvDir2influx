@@ -16,25 +16,33 @@ def getDirHash(folderPath): #generates hashes for all files in a directory
     
     for dirName, subdirList, fileList in os.walk(folderPath): #retrieves lists for files in folder
         for files in fileList:
-            filepath = "/".join([folderPath,files])
+            filepath = "/".join([folderPath,files]) #creates the full path of the file
             print(filepath) #recreating the full path so we can open the file
-            hashedfile = hashfile(filepath)
+            hashedfile = hashfile(filepath) #get has of the selected file
             hashlist.append([hashedfile, filepath]) #add hash and file path to a list
     return hashlist
-#    with open('.newhash','w+') as storehash: #creates/overrides file and stores hash list to disk
-#        for data in hashlist:
-#            storehash.write('%s\n' % data)
-#            print(data)
 
-def checkFileHash(newhash):
-     if os.path.isfile('.oldhash') == False: #checks if file exists
-        with open('.oldhash', 'w+') as f: #creates the file
-             temp = ['','']
-             f.write('%s\n' % temp) #initilize table
+def storeHashList(hashlist, filename):
+    with open(filename,'w+') as storehash: #creates/overrides file and stores hash list to disk
+        for data in hashlist:
+            storehash.write('%s\n' % data)
+            print(data)
+
+def checkFileHash(newhash, filename):
+    if os.path.isfile(filename) == False: #checks if file exists
+        with open(filename, 'w+') as f: #creates the file
+            temp = ['','']
+            f.write('%s\n' % temp) #initilize table
+    with open(filename) as f:
+        for line in f:
+            line = line.strip()
+            print(line)
 
 
-def getNewFiles(folderPath): #finds what files have changes and returns them in a list
-    return checkFileHash(getDirHash(folderPath))
+
+
+def getNewFiles(folderPath, hashstore): #finds what files have changes and returns them in a list
+    return checkFileHash(getDirHash(folderPath), hashstore)
 
 
 
@@ -49,6 +57,9 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--input', nargs='?', required=True,
                         help='Input folder to watch')
 
+    parser.add_argument('-s', '--store', nargs='?', default='.oldhash',
+                        help='file name of hash store')
+
     args = parser.parse_args()
 
-    getDirHash(args.input)
+    getNewFiles(args.input, get.store)
