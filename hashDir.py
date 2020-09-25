@@ -28,40 +28,40 @@ def storeHashList(hashlist, filename):
         json.dump(hashlist, storehash) #stores hashlist as a json file
 
 def checkFileHash(newhash, filename):
-    oldlist = []
+    oldhash = []
     filefound = []
     if os.path.isfile(filename) == False: #checks if file exists
         with open(filename, 'w+') as f: #creates the file
             temp = ['','']
             json.dump(temp, f) #save blank template as json file
 
-#    storeHashList(newhash, filename)
     with open(filename) as f: #opens saved hash file as f
-        oldlist = json.load(f) #load json data from file
+        oldhash = json.load(f) #load json data from file
     
-    for i in oldlist:
-        for j in newlist:
-            if (i[0] != j[0]):
-                filefound.append(j)
-    print(filefound)
+    found = False
+    try: #try to see if there is usable data
+        for i in newhash: #loops through all new hashes
+            for j in oldhash: #each newhash is checked against all old hashes
+                if (i[0] == j[0]): #hash vs hash
+                    found = True 
+            if found:
+                found = False #reset found trigger
+            else:
+                filefound.append(i) #add entry of new hash with file path
+    except: #exception assumes empty file and treats all hashes as new
+        print('no historical hashes')
+        filefound = newhash
+
+    storeHashList(newhash, filename) #store newhash as oldhash
+    return filefound
 
             
-
-
-
-
 def getNewFiles(folderPath, hashstore): #finds what files have changes and returns them in a list
     return checkFileHash(getDirHash(folderPath), hashstore)
 
 
-
-
-
-
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='folder activity trigger')
+if __name__ == "__main__": #arguments are used if this is run stand alone
+    parser = argparse.ArgumentParser(description='New file finder')
 
     parser.add_argument('-i', '--input', nargs='?', required=True,
                         help='Input folder to watch')
