@@ -2,6 +2,7 @@ import inotify.adapters
 import argparse
 import csvToInfluxdb
 import hashDir
+import time
 
 
 def folderwatch(folderpath):
@@ -12,11 +13,11 @@ def folderwatch(folderpath):
 
     for event in  i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event #extracts the topics of interest, as taken from the example
-        
-        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names)) #displays the info from the differnt topics
+        #print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names)) #displays the info from the differnt topics
         
         if 'IN_CLOSE_WRITE' in type_names: #looks for a file that has been written to, indicated IOT device has uploaded new logs
-            sleep(20)
+            print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names)) #displays the info from the differnt topics
+            time.sleep(1) #delay to ensure IOT FTP uploads are done
             newFiles = hashDir.getNewFiles(folderpath, '.oldhash')
             if newFiles == []:
                 print("nothing to do")

@@ -6,11 +6,7 @@ import json
 hasher = hashlib.sha1()
 
 def hashfile(filepath): #generates sha1 hash of inputted file
-    with open(filepath, 'rb') as filetohash: #opens file in the list, ignoring sub directories
-        buf = filetohash.read() #some hash magic --_0_--
-        hasher.update(buf) 
-        return(hasher.hexdigest())     
-
+    return hashlib.md5(open(filepath, 'rb').read()).hexdigest() 
 
 def getDirHash(folderPath): #generates hashes for all files in a directory
     hashlist = []
