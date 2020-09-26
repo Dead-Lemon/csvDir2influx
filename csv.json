@@ -4,7 +4,7 @@
     "db" : "logger",
     "user" : "logger",
     "password" : "inputdatalogin",
-    "ssl" : "0",
+    "ssl" : "False",
     "createdb" : "True",
     "measurementName": "Site1",
     "tz" : "Africa/Johannesburg",

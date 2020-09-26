@@ -15,11 +15,6 @@ def unix_time_millis(dt):
     return int((dt - epoch).total_seconds() * 1000)
 
 
-with open('csv.json') as configdata:
-    config = json.load(configdata)
-
-print(config['mapping']['fieldSchema']['AI01']['from'])
-
 def testFloat(data):
     try:
         return(float(data))
@@ -39,13 +34,16 @@ def testBool(data):
         elif data == 'False':
             return(False)
         else:
-            return(data)
+            return()
     except:
-        return(data)
+        return()
 
-def loadCsv(inputfilename):
+def loadCsv(inputfilename, configfile):
 
-    client = InfluxDBClient(config['host'], config['port'], config['user'], config['password'], config['db'], ssl=bool(int(config['ssl'])))
+    with open(configfile) as configdata:
+        config = json.load(configdata)
+
+    client = InfluxDBClient(config['host'], config['port'], config['user'], config['password'], config['db'], ssl=testBool(config['ssl']))
     dbname = config['db']
     if(config['createdb'] == 'True'):
         print('Deleting database %s'%dbname)
@@ -133,4 +131,17 @@ def loadCsv(inputfilename):
         print("Wrote %d, response: %s" % (len(datapoints), response))
 
     print('Done')
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='csv to influxdb')
+
+    parser.add_argument('-i', '--input', nargs='?', required=True,
+                        help='Input folder to watch')
+
+    parser.add_argument('-c', '--config', nargs='?', default='csv.json',
+                        help='config file location')
+
+    args = parser.parse_args()
+
+    loadCsv(args.input, args.config)
     

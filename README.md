@@ -1,11 +1,9 @@
 # csv-to-influxdb Extended
-Simple python script that inserts data points read from a csv file into a influxdb database.
-
-To create a new database, specify the parameter ```--create```. This will drop any database with a name equal to the one supplied with ```--dbname```.
-
 Library is being modified to watch a folder for FTP uploaded CSV files.
-hashDir will return a list of change files between runs
-folder-watch will monitor a set folder and trigger when a file detects a Close with write.
+
+hashDir returns a list of change files between runs
+folderWatch monitors a set folder and will call hashDir when a change is detected
+csvToInfluxdb is configured by the csv.json file. Column names can me renamed
 
 ## hashDir Usage
 
@@ -23,70 +21,92 @@ returns [HASH, FULL PATH OF FILE, FILE NAME]
 ```
 
 
-## Usage
+## csvToInfluxdb Usage
 
 ```
-usage: csv-to-influxdb.py [-h] -i [INPUT] [-d [DELIMITER]] [-s [SERVER]]
-                          [--ssl] [-u [USER]] [-p [PASSWORD]] --dbname
-                          [DBNAME] [--create] [-m [METRICNAME]]
-                          [-tc [TIMECOLUMN]] [-tf [TIMEFORMAT]] [-tz TIMEZONE]
-                          [--fieldcolumns [FIELDCOLUMNS]]
-                          [--tagcolumns [TAGCOLUMNS]] [-g] [-b BATCHSIZE]
+usage: hashDir.py -i [INPUT] -c [CONFIG]
 
-Csv to influxdb.
-
-optional arguments:
-  -h, --help            show this help message and exit
   -i [INPUT], --input [INPUT]
-                        Input csv file.
-  -d [DELIMITER], --delimiter [DELIMITER]
-                        Csv delimiter. Default: ','.
-  -s [SERVER], --server [SERVER]
-                        Server address. Default: localhost:8086
-  --ssl                 Use HTTPS instead of HTTP.
-  -u [USER], --user [USER]
-                        User name.
-  -p [PASSWORD], --password [PASSWORD]
-                        Password.
-  --dbname [DBNAME]     Database name.
-  --create              Drop database and create a new one.
-  -m [METRICNAME], --metricname [METRICNAME]
-                        Metric column name. Default: value
-  -tc [TIMECOLUMN], --timecolumn [TIMECOLUMN]
-                        Timestamp column name. Default: timestamp.
-  -tf [TIMEFORMAT], --timeformat [TIMEFORMAT]
-                        Timestamp format. Default: '%Y-%m-%d %H:%M:%S' e.g.:
-                        1970-01-01 00:00:00
-  -tz TIMEZONE, --timezone TIMEZONE
-                        Timezone of supplied data. Default: UTC
-  --fieldcolumns [FIELDCOLUMNS]
-                        List of csv columns to use as fields, separated by
-                        comma, e.g.: value1,value2. Default: value
-  --tagcolumns [TAGCOLUMNS]
-                        List of csv columns to use as tags, separated by
-                        comma, e.g.: host,data_center. Default: host
-  -g, --gzip            Compress before sending to influxdb.
-  -b BATCHSIZE, --batchsize BATCHSIZE
-                        Batch size. Default: 5000.
+                        Path to csv file
+  
+  optional
+
+  -c [CONFIG], --config [CONFIG]
+                        path to config file
+                        Default = csv.json
+
+returns [HASH, FULL PATH OF FILE, FILE NAME]
+
+```
+
+## Example of json config file
+
+```
+{
+    "host": "127.0.0.1",
+    "port" : "8086",
+    "db" : "csvlogs",
+    "user" : "csv",
+    "password" : "csv",
+    "ssl" : "0",
+    "createdb" : "True",
+    "measurementName": "Site1",
+    "tz" : "Etc/UCT",
+    "tags" : "False",
+    "batchSize" : "5000",
+    "mapping": {
+      "time": {
+        "from": "Date & Time",
+        "type": "timestamp",
+        "format": "%Y/%m/%d %H:%M:%S"
+      },
+      "fieldSchema": {
+        "AI00": {
+          "from": "AI00 ()",
+          "type": "float"
+        },
+        "AI01": {
+          "from": "AI01 ()",
+          "type": "float"
+        },
+      },
+      "tagSchema": {
+        "SIM1": {
+          "from": "SIM1",
+          "type": "*"
+        }
+      }
+    },
+    "csv": {
+      "delimiter": ","
+    }
+  }
 
 ```
 
 ## Example
 
-Considering the csv file:
+Csv Data system is being modeled around file:
 ```
-timestamp,value,computer
-1970-01-01 00:00:00,51.374894,0
-1970-01-01 00:00:01,74.562764,1
-1970-01-01 00:00:02,17.833757,2
-1970-01-01 00:00:03,40.125102,0
-1970-01-01 00:00:04,88.160817,1
-1970-01-01 00:00:05,28.401695,2
-1970-01-01 00:00:06,98.670792,3
-1970-01-01 00:00:07,69.532011,0
-1970-01-01 00:00:08,39.198964,0
+Date & Time,AI00 (),AI01 (),AI05 (�C),AI06 (v),CI00,CI06,CI07,CI08,
+2020/09/14 00:00:00,0.056250,1.348250,20.809998,6.972709,1,2,0,0,
+2020/09/14 00:01:00,0.056250,1.348250,20.809998,,1,,,,
+2020/09/14 00:02:00,0.056250,1.348250,20.809998,,1,,,,
+2020/09/14 00:03:00,0.056250,1.348250,20.809998,,1,,,,
+2020/09/14 00:04:00,0.053750,1.348250,20.809998,,1,,,,
+2020/09/14 00:05:00,0.056250,1.348250,20.809998,,1,,,,
+2020/09/14 00:06:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:07:00,0.056250,1.348250,20.809998,,1,,,,
+2020/09/14 00:08:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:09:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:10:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:11:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:12:00,0.053750,1.348250,20.809998,,1,,,,
+2020/09/14 00:13:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:14:00,0.055000,1.348250,20.809998,,1,,,,
+2020/09/14 00:15:00,0.053750,1.348250,20.809998,6.972709,1,2,0,0,
 ```
 
 The following command will insert the file into a influxdb database:
 
-```python csv-to-influxdb.py --dbname test --input data.csv --tagcolumns computer --fieldcolumns value```
+```python csvToInfluxdb.py -i logs.csv -c csv.json```
