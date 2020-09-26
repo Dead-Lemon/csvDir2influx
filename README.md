@@ -48,7 +48,7 @@ returns [HASH, FULL PATH OF FILE, FILE NAME]
     "db" : "csvlogs",
     "user" : "csv",
     "password" : "csv",
-    "ssl" : "0",
+    "ssl" : "False",
     "createdb" : "True",
     "measurementName": "Site1",
     "tz" : "Etc/UCT",
@@ -86,7 +86,7 @@ returns [HASH, FULL PATH OF FILE, FILE NAME]
 
 ## Example
 
-Csv Data system is being modeled around file:
+Csv Data system is being modeled around:
 ```
 Date & Time,AI00 (),AI01 (),AI05 (�C),AI06 (v),CI00,CI06,CI07,CI08,
 2020/09/14 00:00:00,0.056250,1.348250,20.809998,6.972709,1,2,0,0,

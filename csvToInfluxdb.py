@@ -19,13 +19,13 @@ def testFloat(data):
     try:
         return(float(data))
     except:
-        return()
+        pass
 
 def testInt(data):
     try:
         return(int(data))
     except:
-        return(data)
+        return()
 
 def testBool(data):
     try:
