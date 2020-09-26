@@ -38,10 +38,7 @@ def testBool(data):
     except:
         return()
 
-def loadCsv(inputfilename, configfile):
-
-    with open(configfile) as configdata:
-        config = json.load(configdata)
+def loadCsv(inputfilename, config):
 
     client = InfluxDBClient(config['host'], config['port'], config['user'], config['password'], config['db'], ssl=testBool(config['ssl']))
     dbname = config['db']
@@ -132,6 +129,12 @@ def loadCsv(inputfilename, configfile):
 
     print('Done')
 
+
+def loadConfig(inputfilename, configfile): ## load config from file. allows passing json object to LoadCsv directly if using in an external script
+    with open(configfile) as configdata:
+        config = json.load(configdata)
+    loadCsv(inputfilename, config)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='csv to influxdb')
 
@@ -143,5 +146,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    loadCsv(args.input, args.config)
+    loadConfig(args.input, args.config)
     
