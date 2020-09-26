@@ -10,6 +10,7 @@ def hashfile(filepath): #generates MD5 hash of inputted file
 def getDirHash(folderPath): #generates hashes for all files in a directory
     hashlist = []    
     for dirName, subdirList, fileList in os.walk(folderPath): #retrieves lists for files in folder
+        #print(dirName, subdirList, fileList)
         for files in fileList:
             filepath = "/".join([folderPath,files]) #creates the full path of the file
             hashedfile = hashfile(filepath) #get hash of the selected file
@@ -42,7 +43,7 @@ def checkFileHash(newhash, filename):
             else:
                 filefound.append(i) #add entry of new hash with file path
     except: #exception assumes empty file and treats all hashes as new
-        print('no historical hashes')
+        print('no historical hashes, creating file')
         filefound = newhash
 
     storeHashList(newhash, filename) #store newhash as oldhash

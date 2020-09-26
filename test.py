@@ -1,25 +1,22 @@
 import json
 import csvToInfluxdb
-import csv
-#import pandas as pd
+import hashDir
+import preProcess
 
 
-with open('csv.json') as configdata:
-    data = json.load(configdata)
+filelist = []
+filelist = (hashDir.getNewFiles('sample', '.hashstore'))
+filelist = preProcess.removeUnwanted(filelist)
+#preProcess.findUnitID('SIM1_T_20200914.csv')
+#preProcess.updateMeasureID('SIM3', 'csv.json')
 
-print(data['mapping']['fieldSchema'])
+try:
+    for i in filelist:
+        fileID = preProcess.findUnitID(i[2])
+        jsonblob = preProcess.updateMeasureID(fileID, 'csv.json')
+        csvToInfluxdb.loadCsv(i[1], jsonblob)
+except:
+    print("nothing to do")
 
-listing = data['mapping']['fieldSchema']
-for i in data['mapping']['fieldSchema']:
-    print(i)
-    print(data['mapping']['fieldSchema'][i]['from'])
+#csvToInfluxdb.loadConfig('sample/SIM1_T_20200914.csv', 'csv.json')
 
-print(bool(int('0')))
-
-csvToInfluxdb.loadConfig('sample/SIM1_T_20200914.csv', 'csv.json')
-
-#with open('sample/SIM1_T_20200914.csv', 'r', errors="replace") as csvfile:
-#    csv_reader = csv.reader(csvfile)
-#    
-#    for row in csv_reader:
-#        print(row)
