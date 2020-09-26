@@ -2,10 +2,22 @@ import inotify.adapters
 import argparse
 import csvToInfluxdb
 import hashDir
+import postProcess
 import time
 
 
-def folderwatch(folderpath, ignorefile):
+def filesFound(fileList, postprocess):
+    for files in filesList:
+        if postprocess:
+            postProcess.run(files)
+        else:
+            csvToInfluxdb.loadCsv(inputfilename, servername, user, password, dbname, metric, 
+            timecolumn, timeformat, tagcolumns, fieldcolumns, usegzip, 
+            delimiter, batchsize, create, datatimezone, usessl, singletag, fieldname)
+
+
+
+def folderwatch(folderpath, postprocess):
 
     i = inotify.adapters.Inotify()
 
@@ -22,7 +34,7 @@ def folderwatch(folderpath, ignorefile):
             if newFiles == []:
                 print("nothing to do")
             else:
-                print(newFiles)
+                filesFound(newFiles, postprocess)
 
         
 
@@ -34,12 +46,15 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--input', nargs='?', required=True,
                         help='Input folder to watch')
 
-    parser.add_argument('-g', '--ignore', nargs='?', default='_A_',
-                        help='ignore file containing the phrase')
+    parser.add_argument('-p', '--postprocess', nargs='?', default=False,
+                        help='enable custom postprocess script')
+
+    parser.add_argument('-c', '--config', nargs='?', default='csv.conf',
+                        help='config file location')
 
     args = parser.parse_args()
 
-    folderwatch(args.input, args.ignore)
+    folderwatch(args.input, args.postprocess, args.config)
 
 
 

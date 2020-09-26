@@ -1,0 +1,64 @@
+{
+    "host": "192.168.1.33",
+    "port" : "8086",
+    "db" : "logger",
+    "user" : "logger",
+    "password" : "inputdatalogin",
+    "ssl" : "0",
+    "createdb" : "True",
+    "measurementName": "Site1",
+    "tz" : "Africa/Johannesburg",
+    "tags" : "False",
+    "batchSize" : "5000",
+    "mapping": {
+      "time": {
+        "from": "Date & Time",
+        "type": "timestamp",
+        "format": "%Y/%m/%d %H:%M:%S"
+      },
+      "fieldSchema": {
+        "AI00": {
+          "from": "AI00 ()",
+          "type": "float"
+        },
+        "AI01": {
+          "from": "AI01 ()",
+          "type": "float"
+        },
+        "AI05": {
+          "from": "AI05 (C)",
+          "type": "float"
+        },
+        "AI06": {
+          "from": "AI06 (v)",
+          "type": "float"
+        },
+        "CI00": {
+          "from": "CI00",
+          "type": "float"
+        },
+        "CI06": {
+          "from": "CI06",
+          "type": "float"
+        },
+        "CI07": {
+          "from": "CI07",
+          "type": "float"
+        },
+        "CI08": {
+          "from": "CI08",
+          "type": "float"
+        }
+      },
+      "tagSchema": {
+        "SIM1": {
+          "from": "SIM1",
+          "type": "*"
+        }
+      }
+    },
+    "csv": {
+      "delimiter": ","
+    }
+  }
+  
