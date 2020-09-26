@@ -118,7 +118,7 @@ def loadCsv(inputfilename, configfile):
             
 
     # write rest
-    print(datapoints)
+    #print(datapoints)
     if len(datapoints) > 0:
         print('Read %d lines'%count)
         print('Inserting %d datapoints...'%(len(datapoints)))
