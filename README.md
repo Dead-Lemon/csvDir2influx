@@ -1,9 +1,11 @@
-# csv-to-influxdb Extended
+# csvDir2influx
+## Monitors folder for uploaded CSV files and sends to influx
 Library is being modified to watch a folder for FTP uploaded CSV files.
 
-hashDir returns a list of change files between runs
-folderWatch monitors a set folder and will call hashDir when a change is detected
-csvToInfluxdb is configured by the csv.json file. Column names can me renamed
+* hashDir returns a list of change files between runs
+* folderWatch monitors a set folder and will call hashDir when a change is detected
+* csvToInfluxdb is configured by the csv.json file. Column names can me renamed
+* preProcess is being used as a custom processing on csv data before being uploaded
 
 ## hashDir Usage
 
@@ -20,7 +22,6 @@ usage: hashDir.py -i [INPUT] -s [STORE]
 returns [HASH, FULL PATH OF FILE, FILE NAME]
 
 ```
-
 
 ## csvToInfluxdb Usage
 
