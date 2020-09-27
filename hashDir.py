@@ -19,7 +19,7 @@ def scrubDir(folderPath): #removes non csv files from direcotry listing
     
 def getDirHash(folderPath): #generates hashes for all files in a directory
     hashlist = []
-    csvList = scrubDir(folderPath)  #retrieves lists for csv files in folder
+    csvList = scrubDir(folderPath)  #retrieves lists of csv files in folder
     for files in csvList: 
         filepath = "/".join([folderPath,files]) #creates the full path of the file
         hashedfile = hashfile(filepath) #get hash of the selected file
