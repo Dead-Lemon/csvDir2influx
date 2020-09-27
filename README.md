@@ -7,6 +7,30 @@ Library is being modified to watch a folder for FTP uploaded CSV files.
 * csvToInfluxdb is configured by the csv.json file. Column names can me renamed
 * preProcess is being used as a custom processing on csv data before being uploaded
 
+## SingleRun Usage
+
+* Used for cron like usage, or just once off runs
+
+```
+usage: SingleRun.py -i [INPUT] -s [STORE]
+  required
+  -i [INPUT], --input [INPUT]
+                        Path to folder to check
+  optional                      
+  -c [CONFIG], --config [CONFIG]
+                        Store name for dirtory hashes
+                        Default = csv.json
+
+  -s [HASHSTORE] --hashstore [HASHSTORE]  
+                        help='hashed file store'
+                        default= .hashstore
+
+  -p [PREPROCESS] --preprocess [PREPROCESS] default=False,
+                        Enable use of preprocessing script
+                        Very application specific at the moment
+                        Default = False
+```
+
 ## hashDir Usage
 
 ```
