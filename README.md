@@ -2,9 +2,8 @@
 ## Monitors folder for uploaded CSV files and sends to influx
 Library is being modified to watch a folder for FTP uploaded CSV files.
 
-* SingleRun - Checks for any changes and imports data
-* folderWatch - monitors a folder for changes and imports and new files
-* hashDir returns a list of change files between runs
+* importCSVfolder - import csv file in a folder and watch for additions
+* hashDir - returns a list of change files between runs
 * csvToInfluxdb - import csv to influxdb
 * preProcess - custom user functionality
 
@@ -12,7 +11,6 @@ Library is being modified to watch a folder for FTP uploaded CSV files.
 
 * Usable in cron like usage, or just once off runs
 * Able to set folder to monitor for changes
-```requires $pip install minotaur```
 
 ```
 usage: importCSVfolder.py -i '/tmp/upload' --watch True --config '.csv.json' 
@@ -34,13 +32,11 @@ usage: importCSVfolder.py -i '/tmp/upload' --watch True --config '.csv.json'
                         default= .hashstore
 
   -p [PREPROCESS] --preprocess [PREPROCESS] default=False,
-                        Enable use of preprocessing script
+                        Enable use of preprocessing.py script
                         Very application specific at the moment
                         Default = False
 ```
-
-
-```
+```requires $pip install minotaur```
 
 ## hashDir Usage
 
@@ -60,7 +56,7 @@ returns [HASH, FULL PATH OF FILE, FILE NAME]
 
 ## csvToInfluxdb Usage
 
-```Require pip install influxdb```
+```Require $pip install influxdb```
 
 ```
 usage: csvToInfluxdb.py -i [INPUT] -c [CONFIG]

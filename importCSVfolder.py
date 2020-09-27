@@ -2,6 +2,7 @@
 # Keeps file comparison and uploads new files
 import argparse
 import json
+import minotaur
 import csvToInfluxdb
 import hashDir
 import preProcess
@@ -60,6 +61,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    runImport(args.input, args.watch, args.config, args.hashstore, args.preprocess)
+    startup(args.input, args.watch, args.config, args.hashstore, args.preprocess)
 
 
