@@ -5,16 +5,25 @@ import json
 
 
 def hashfile(filepath): #generates MD5 hash of inputted file
-    return hashlib.md5(open(filepath, 'rb').read()).hexdigest() 
+    return hashlib.md5(open(filepath, 'rb').read()).hexdigest()
 
+def scrubDir(folderPath): #removes non csv files from direcotry listing
+    newList = []
+    for files in os.listdir(folderPath):
+        if '.csv' in files:
+            newList.append(files)
+            #print('added %s'%files)
+        else:
+            print('ignoring %s'%files)
+    return newList
+    
 def getDirHash(folderPath): #generates hashes for all files in a directory
-    hashlist = []    
-    for dirName, subdirList, fileList in os.walk(folderPath): #retrieves lists for files in folder
-        #print(dirName, subdirList, fileList)
-        for files in fileList:
-            filepath = "/".join([folderPath,files]) #creates the full path of the file
-            hashedfile = hashfile(filepath) #get hash of the selected file
-            hashlist.append([hashedfile, filepath, files]) #add hash and file path to a list
+    hashlist = []
+    csvList = scrubDir(folderPath)  
+    for files in csvList: #retrieves lists for files in folder
+        filepath = "/".join([folderPath,files]) #creates the full path of the file
+        hashedfile = hashfile(filepath) #get hash of the selected file
+        hashlist.append([hashedfile, filepath, files]) #add hash and file path to a list
     return hashlist
 
 def storeHashList(hashlist, filename):
