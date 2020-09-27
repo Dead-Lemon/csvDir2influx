@@ -6,6 +6,12 @@ import csvToInfluxdb
 import hashDir
 import preProcess
 
+def startup(inputfiles, watch, config, hashstore, preprocess):
+    if watch:
+        folderwatch(inputfiles, config, hashstore, preprocess)
+    else:
+        runImport(inputfiles, config, hashstore, preprocess)  
+
 def runImport(inputfiles, config, hashstore, preprocess):
     filelist = []
     filelist = hashDir.getNewFiles(inputfiles, hashstore) #checks is there is any changed files and return a list
@@ -22,12 +28,26 @@ def runImport(inputfiles, config, hashstore, preprocess):
     print("Import Done")
 
 
+def folderwatch(inputfiles, config, hashstore, preprocess):
+    runImport(inputfiles, config, hashstore, preprocess)
+    with minotaur.Inotify() as n:
+        n.add_watch('sample', minotaur.Mask.CLOSE_WRITE)
+        try:
+            for evt in n:
+                #print(evt)
+                runImport(inputfiles, config, hashstore, preprocess)
+        except KeyboardInterrupt:
+            print(' stopped')
+            pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='csv to influxdb')
 
     parser.add_argument('-i', '--input', nargs='?', required=True,
                         help='Input folder to consume')
+
+    parser.add_argument('-w', '--watch', nargs='?', default=False,
+                        help='enable folder watch')
 
     parser.add_argument('-c', '--config', nargs='?', default='csv.json',
                         help='config file location')
@@ -40,6 +60,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    runImport(args.input, args.config, args.hashstore, args.preprocess)
+    runImport(args.input, args.watch, args.config, args.hashstore, args.preprocess)
 
 

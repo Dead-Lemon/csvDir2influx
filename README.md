@@ -8,18 +8,24 @@ Library is being modified to watch a folder for FTP uploaded CSV files.
 * csvToInfluxdb - import csv to influxdb
 * preProcess - custom user functionality
 
-## SingleRun Usage
+## importCSVfolder Usage
 
-* Used for cron like usage, or just once off runs
+* Usable in cron like usage, or just once off runs
+* Able to set folder to monitor for changes
+```requires $pip install minotaur```
 
 ```
-usage: SingleRun.py -i [INPUT] 
+usage: importCSVfolder.py -i '/tmp/upload' --watch True --config '.csv.json' 
+                                            --hashstore '.hashstore' -p True
 
   required
   -i [INPUT], --input [INPUT]
-                        Path to folder to check
-  optional                      
-  -c [CONFIG], --config [CONFIG]
+                        Path to folder to check                        
+  optional
+  -w [WATCH] --watch [WATCH]
+                        watch set input folder for changes
+                        Default = False                  
+  -c [CONFIG] --config [CONFIG]
                         Store name for dirtory hashes
                         Default = csv.json
 
@@ -33,31 +39,7 @@ usage: SingleRun.py -i [INPUT]
                         Default = False
 ```
 
-##FolderWatch Usage
 
-```requires pip install minotaur```
-
-* Monitors a set folder and trigger the import process on file change
-
-```
-usage: folderWatch.py -i [INPUT] 
-
-  required
-  -i [INPUT], --input [INPUT]
-                        Path to folder to check
-  optional                      
-  -c [CONFIG], --config [CONFIG]
-                        Store name for dirtory hashes
-                        Default = csv.json
-
-  -s [HASHSTORE] --hashstore [HASHSTORE]  
-                        help='hashed file store'
-                        default= .hashstore
-
-  -p [PREPROCESS] --preprocess [PREPROCESS] default=False,
-                        Enable use of preprocessing script
-                        Very application specific at the moment
-                        Default = False
 ```
 
 ## hashDir Usage
