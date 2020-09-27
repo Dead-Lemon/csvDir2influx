@@ -13,9 +13,7 @@ def runImport(inputfiles, config, hashstore, preprocess):
         print("PreProcess selected")
         filelist = preProcess.removeUnwanted(filelist) #removes files, based on a set phrase, from the file list.
         for i in filelist: #[i = HASH, Full path to file, filename]
-            fileID = preProcess.findUnitID(i[2]) #extracts device ID from the file name
-            print(fileID)
-            jsonblob = preProcess.updateMeasureID(fileID, config) #updates the json file with this new ID
+            jsonblob = preProcess.runPreProcess(i[2], config)
             csvToInfluxdb.loadCsv(i[1], jsonblob) #passes the the json object into the csv import script        
     else:
         for i in filelist: #[i = HASH, Full path to file, filename]

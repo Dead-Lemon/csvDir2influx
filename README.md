@@ -2,17 +2,19 @@
 ## Monitors folder for uploaded CSV files and sends to influx
 Library is being modified to watch a folder for FTP uploaded CSV files.
 
+* SingleRun - Checks for any changes and imports data
+* folderWatch - monitors a folder for changes and imports and new files
 * hashDir returns a list of change files between runs
-* folderWatch monitors a set folder and will call hashDir when a change is detected
-* csvToInfluxdb is configured by the csv.json file. Column names can me renamed
-* preProcess is being used as a custom processing on csv data before being uploaded
+* csvToInfluxdb - import csv to influxdb
+* preProcess - custom user functionality
 
 ## SingleRun Usage
 
 * Used for cron like usage, or just once off runs
 
 ```
-usage: SingleRun.py -i [INPUT] -s [STORE]
+usage: SingleRun.py -i [INPUT] 
+
   required
   -i [INPUT], --input [INPUT]
                         Path to folder to check
@@ -136,4 +138,10 @@ Date & Time,AI00 (),AI01 (),AI05 (�C),AI06 (v),CI00,CI06,CI07,CI08,
 2020/09/14 00:15:00,0.053750,1.348250,20.809998,6.972709,1,2,0,0,
 ```
 
+## PreProcess
+user code to manipulate files lists and jsons file.
+Allows automating some extra tasks
 
+* Find deviceID from file name
+* Update measurement name to DevID
+* Remove files from file list, if set phrase is found

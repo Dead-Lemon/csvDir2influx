@@ -32,3 +32,7 @@ def updateMeasureID(id, configDir): #reads json file and updates measurement nam
     #print(configID)
     return(configID)
 
+def runPreProcess(filein, config):
+    fileID = findUnitID(filein) #extracts device ID from the file name
+    jsonblob = updateMeasureID(fileID, config) #updates the json file with this new ID
+    return jsonblob
