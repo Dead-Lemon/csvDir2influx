@@ -33,6 +33,33 @@ usage: SingleRun.py -i [INPUT]
                         Default = False
 ```
 
+##FolderWatch Usage
+
+```requires pip install minotaur```
+
+* Monitors a set folder and trigger the import process on file change
+
+```
+usage: folderWatch.py -i [INPUT] 
+
+  required
+  -i [INPUT], --input [INPUT]
+                        Path to folder to check
+  optional                      
+  -c [CONFIG], --config [CONFIG]
+                        Store name for dirtory hashes
+                        Default = csv.json
+
+  -s [HASHSTORE] --hashstore [HASHSTORE]  
+                        help='hashed file store'
+                        default= .hashstore
+
+  -p [PREPROCESS] --preprocess [PREPROCESS] default=False,
+                        Enable use of preprocessing script
+                        Very application specific at the moment
+                        Default = False
+```
+
 ## hashDir Usage
 
 ```
@@ -50,6 +77,8 @@ returns [HASH, FULL PATH OF FILE, FILE NAME]
 ```
 
 ## csvToInfluxdb Usage
+
+```Require pip install influxdb```
 
 ```
 usage: csvToInfluxdb.py -i [INPUT] -c [CONFIG]
