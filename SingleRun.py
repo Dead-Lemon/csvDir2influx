@@ -18,6 +18,8 @@ def runImport(inputfiles, config, hashstore)
             csvToInfluxdb.loadConfig(i[1], config)
     except:
         print("nothing to do")
+    
+    print("Import Done")
 
 
 
