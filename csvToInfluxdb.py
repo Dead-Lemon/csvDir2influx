@@ -1,5 +1,4 @@
 import requests
-import gzip
 import argparse
 import csv
 import datetime
@@ -38,6 +37,16 @@ def testBool(data):
     except:
         return()
 
+def writeDataPoint(datapoints, client):
+    print('Inserting %d datapoints...'%(len(datapoints)))
+    response = client.write_points(datapoints)
+
+    if response == False:
+        print('Problem inserting points, exiting...')
+        exit(1)
+    
+    print("Wrote %d, response: %s" % (len(datapoints), response))
+
 def loadCsv(inputfilename, config):
 
     client = InfluxDBClient(config['host'], config['port'], config['user'], config['password'], config['db'], ssl=testBool(config['ssl']))
@@ -58,10 +67,8 @@ def loadCsv(inputfilename, config):
         reader = csv.DictReader(csvfile, delimiter=config['csv']['delimiter'])
 
         for row in reader:
-            #print(row)
-            
+           
             datetime_naive = datetime.datetime.strptime(row[config['mapping']['time']['from']],config['mapping']['time']['format']) #strptime(2020/09/12 12:12:12, %Y/%m%d %H:%M:%S) converts time string to unix time based on set template
-            #print(datetime_naive)
 
             if datetime_naive.tzinfo is None:
                 datetime_local = timezone(config['tz']).localize(datetime_naive) #timezone offset converts back to UTC
@@ -70,9 +77,12 @@ def loadCsv(inputfilename, config):
 
             timestamp = unix_time_millis(datetime_local) * 1000000 # in nanoseconds
             if config['tags'] == 'True':
-                for t in config['mapping']['tagSchema']:
+                try:
+                    for t in config['mapping']['tagSchema']:
                         if config['mapping']['tagSchema'][t]['from'] in row:
                             tags[t] = row[t]
+                except:
+                    print("no tags found")
 
             fields = {}
 
@@ -102,30 +112,14 @@ def loadCsv(inputfilename, config):
             batchsize = int(config['batchSize'])
             if len(datapoints) % batchsize == 0:
                 print('Read %d lines'%count)
-                print('Inserting %d datapoints...'%(len(datapoints)))
-                response = client.write_points(datapoints)
-
-                if not response:
-                    print('Problem inserting points, exiting...')
-                    exit(1)
-
-                print("Wrote %d points, up to %s, response: %s" % (len(datapoints), datetime_local, response))
-
+                writeDataPoint(datapoints, client)
                 datapoints = []
-            
-
-    # write rest
+        
+# write rest
     #print(datapoints)
     if len(datapoints) > 0:
         print('Read %d lines'%count)
-        print('Inserting %d datapoints...'%(len(datapoints)))
-        response = client.write_points(datapoints)
-
-        if response == False:
-            print('Problem inserting points, exiting...')
-            exit(1)
-
-        print("Wrote %d, response: %s" % (len(datapoints), response))
+        writeDataPoint(datapoints, client)
 
     print('Done')
 

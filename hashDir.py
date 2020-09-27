@@ -25,7 +25,7 @@ def checkFileHash(newhash, filename):
     oldhash = []
     filefound = []
     if os.path.isfile(filename) == False: #checks if file exists
-        with open(filename, 'w+') as f: #creates the file
+        with open(filename, 'w+') as f: #creates the file if not
             temp = ['','']
             json.dump(temp, f) #save blank template as json file
 
