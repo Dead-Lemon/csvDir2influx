@@ -1,12 +1,13 @@
 import json
 
+preConf = {'removeID' : '_A_'}
 
 try:
     with open('pre.json') as configdata:
         preConf = json.load(configdata)
 except:
-    print('no config file')
-    exit()
+    print('no config file, defaulting preprocess')
+
     
 
 def removeUnwanted(Filelist): #remove unwated csv from file list
