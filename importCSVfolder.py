@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Single run of script, possibly used with cron trigger.
 # Keeps file comparison and uploads new files
 import argparse
