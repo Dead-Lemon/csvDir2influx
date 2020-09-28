@@ -1,13 +1,13 @@
 import json
-import os
 
+preConf = {'removeID' : '_A_'}
 
 try:
     with open(os.path.join('processlib', 'pre.json')) as configdata:
         preConf = json.load(configdata)
 except:
-    print('no PreProcessing config file')
-    exit()
+    print('no config file, defaulting preprocess')
+
     
 
 def removeUnwanted(Filelist): #remove unwated csv from file list
