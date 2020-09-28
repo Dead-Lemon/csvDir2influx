@@ -3,9 +3,9 @@
 import argparse
 import json
 import minotaur
-import csvToInfluxdb
-import hashDir
-import preProcess
+from processlib import csvToInfluxdb
+from processlib import hashDir
+from processlib import preProcess
 
 def startup(inputfiles, watch, config, hashstore, preprocess):
     if watch:
